@@ -25,10 +25,13 @@ const INITIAL_ASSETS: AssetBalances = {
 type View = 'dashboard' | 'transactions' | 'crypto' | 'planner' | 'assets' | 'settings';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // JAVÍTÁS: A bejelentkezést is mentjük LocalStorage-ba
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('flow_is_authenticated') === 'true';
+  });
+
   const [currentView, setCurrentView] = useState<View>('dashboard');
   
-  // Safe parsing helper
   const safeParse = (key: string, fallback: any) => {
     try {
       const saved = localStorage.getItem(key);
@@ -45,7 +48,6 @@ const App = () => {
   const [goals, setGoals] = useState<BudgetGoal[]>(() => safeParse('flow_goals', []));
   const [assets, setAssets] = useState<AssetBalances>(() => {
     const data = safeParse('flow_assets', INITIAL_ASSETS);
-    // Migration for older versions
     if (data && 'bank' in data) {
       return {
         cash: data.cash || 0,
@@ -91,6 +93,17 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleUnlock = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem('flow_is_authenticated', 'true');
+  };
+
+  // Opcionális: Kijelentkezés funkció a Beállításokhoz
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('flow_is_authenticated');
+  };
+
   const addTransaction = (t: Transaction) => setTransactions([...transactions, t]);
   const deleteTransaction = (id: string) => setTransactions(transactions.filter(t => t.id !== id));
   const addGoal = (g: BudgetGoal) => setGoals([...goals, g]);
@@ -98,7 +111,7 @@ const App = () => {
   const updateAssets = (key: keyof AssetBalances, value: number) => setAssets({...assets, [key]: value});
 
   if (!isAuthenticated) {
-    return <Security onUnlock={() => setIsAuthenticated(true)} />;
+    return <Security onUnlock={handleUnlock} />;
   }
 
   return (
@@ -132,6 +145,7 @@ const App = () => {
             {currentView === 'crypto' && 'Kripto'}
             {currentView === 'settings' && 'Beállítások'}
           </h2>
+          {/* Mobilnézetben logout gombot ide lehetne tenni, vagy a beállításokba */}
         </header>
 
         <div className="max-w-7xl mx-auto">
