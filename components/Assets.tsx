@@ -53,7 +53,6 @@ export const Assets: React.FC<AssetsProps> = ({ assets, updateAssets }) => {
         <div className="space-y-4">
           <div className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2 ml-2">Likvid Eszközök</div>
           
-          {/* Cash */}
           <AssetRow 
             label="Készpénz" 
             value={assets.cash} 
@@ -65,7 +64,6 @@ export const Assets: React.FC<AssetsProps> = ({ assets, updateAssets }) => {
             color="text-emerald-400"
           />
 
-          {/* Revolut */}
           <AssetRow 
             label="Bankszámla (Revolut)" 
             value={assets.bankRevolut} 
@@ -77,7 +75,6 @@ export const Assets: React.FC<AssetsProps> = ({ assets, updateAssets }) => {
             color="text-blue-400"
           />
 
-           {/* OTP */}
            <AssetRow 
             label="Bankszámla (OTP)" 
             value={assets.bankOtp} 
@@ -91,7 +88,6 @@ export const Assets: React.FC<AssetsProps> = ({ assets, updateAssets }) => {
         
           <div className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-6 mb-2 ml-2">Befektetések</div>
 
-          {/* Lightyear */}
           <AssetRow 
             label="Részvények (Lightyear)" 
             value={assets.stockLightyear} 
@@ -103,7 +99,6 @@ export const Assets: React.FC<AssetsProps> = ({ assets, updateAssets }) => {
             color="text-purple-400"
           />
 
-           {/* Government Bonds */}
            <AssetRow 
             label="Állampapír" 
             value={assets.governmentBonds} 
@@ -138,12 +133,16 @@ const AssetRow = ({ label, value, isEditing, editValue, setEditValue, onEdit, on
         <div className="flex gap-2">
           <input 
             type="number" 
+            inputMode="decimal"
             value={editValue}
             autoFocus
+            onFocus={(e) => e.target.select()}
             onChange={(e) => setEditValue(e.target.value)}
-            className="w-32 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-white text-right focus:outline-none focus:border-indigo-500"
+            onBlur={onSave}
+            onKeyDown={(e) => e.key === 'Enter' && onSave()}
+            className="w-32 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-white text-right font-bold focus:outline-none focus:border-indigo-500"
           />
-          <button onClick={onSave} className="text-sm bg-indigo-600 px-3 py-1 rounded text-white font-medium">OK</button>
+          <button onClick={onSave} className="text-sm bg-indigo-600 px-3 py-1 rounded text-white font-bold">OK</button>
         </div>
       ) : (
         <div onClick={onEdit} className={`text-xl font-bold cursor-pointer px-3 py-1 rounded transition-colors select-none ${color}`}>
