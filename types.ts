@@ -7,12 +7,33 @@ export interface Transaction {
   type: TransactionType;
   category: string;
   description: string;
+  assetKey: keyof AssetBalances;
+  isRecurring?: boolean;
+}
+
+export interface QuickAction {
+  id: string;
+  label: string;
+  amount: number;
+  category: string;
+  icon: string;
+  assetKey: keyof AssetBalances;
+}
+
+export interface RecurringTemplate {
+  id: string;
+  amount: number;
+  type: TransactionType;
+  category: string;
+  description: string;
+  assetKey: keyof AssetBalances;
+  dayOfMonth: number;
 }
 
 export interface BudgetGoal {
   id: string;
   category: string;
-  targetAmount: number; // The limit or goal
+  targetAmount: number;
   type: 'spending_limit' | 'saving_goal';
 }
 
@@ -27,9 +48,4 @@ export interface AssetBalances {
   bankOtp: number;
   stockLightyear: number;
   governmentBonds: number;
-}
-
-export interface FinancialAdvice {
-  summary: string;
-  tips: string[];
 }

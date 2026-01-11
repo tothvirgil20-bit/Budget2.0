@@ -1,5 +1,18 @@
 {
-  "name": "Copy of FlowFinance HU",
-  "description": "Teljes körű pénzügyi követő havi költségvetéssel, célokkal és élő Solana árfolyamkövetéssel, magyar nyelven.",
-  "requestFramePermissions": []
+  "name": "FlowFinance",
+  "short_name": "Flow",
+  "description": "Smart personal finance tracker",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2845/2845811.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "requestFramePermissions": ["geolocation"]
 }
